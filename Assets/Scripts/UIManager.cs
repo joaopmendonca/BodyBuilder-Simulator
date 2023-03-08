@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     public GameObject[] allFloatingMenus;
     public GameObject floatingPlayMenu;
     public GameObject floatingEdit;
+    public GameObject detailsHealthLabel;
+    public GameObject detailsMusculatureLabel;
     public GameObject configurePanel;
 
     [Header("Outras")]
