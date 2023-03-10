@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6c358e8ff44d7fa49b030ef2a740022e
+guid: 46d9d03bcee81034c920c200003f2c97
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,7 +7,7 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: GeladeiraEstilizadaMaterial
+      name: Material
     second: {fileID: 2100000, guid: 114fbd7ba2100de4c98a1fe6994b44e4, type: 2}
   materials:
     materialImportMode: 2
