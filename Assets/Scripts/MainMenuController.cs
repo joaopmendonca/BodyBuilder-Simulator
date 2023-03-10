@@ -31,6 +31,7 @@ public class MainMenuController : MonoBehaviour
 
     [Header("Outros")]
     public AudioController audioController;
+    public UIManager uiManager;
     public TextMeshProUGUI goldTxt;
     public int goldCount;
 
@@ -96,6 +97,31 @@ public class MainMenuController : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void feed(int amount)
+    {
+        currentFeed += amount;
+    }
+
+    public void supplement(int amount)
+    {
+        currentSuplementation += amount;
+    }
+
+    public void boostEnergy(int amount)
+    {
+        currentEnergy += amount;
+    }
+
+    public void buildMuscle(int amount)
+    {
+        currentMusculature += amount;
+    }
+
+    public void gainBodyFat(int amount)
+    {
+        currentBodyFat += amount;
+    }
+
     private void UpdateUI()
     {
         // Limita os valores das estatísticas musculares para seus máximos definidos em max
@@ -132,5 +158,19 @@ public class MainMenuController : MonoBehaviour
 
         // Atualiza o texto do contador de ouro
         goldTxt.SetText(goldCount.ToString());
+
+        //Atualiza a imagem de stats de acordo com o bem-star do personagem
+        if(currentGeneralWelfare >= 70)
+        {
+            uiManager.currentWelfareImg.sprite = uiManager.welfareStatsImg[0];
+        }
+        else if(currentGeneralWelfare >= 40 && currentGeneralWelfare < 70)
+        {
+            uiManager.currentWelfareImg.sprite = uiManager.welfareStatsImg[1];
+        }
+        else if(currentGeneralWelfare >= 0 && currentGeneralWelfare < 40)
+        {
+            uiManager.currentWelfareImg.sprite = uiManager.welfareStatsImg[2];
+        }
     }
 }
