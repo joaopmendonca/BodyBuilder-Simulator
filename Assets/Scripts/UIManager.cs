@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
-
 {
-    [Header("Elementos do Menu")]
+    [SerializeField] private LayerMask touchableLayer;
+    [SerializeField] private GameObject interactableObjectMenu;
+    [SerializeField] private AudioController audioController;
+
+    [Header("UI Elements")]
     public Sprite[] welfareStatsImg;
     public Image currentWelfareImg;
     public GameObject[] allFloatingMenus;
@@ -18,36 +18,97 @@ public class UIManager : MonoBehaviour
     public GameObject detailsMusculatureLabel;
     public GameObject configurePanel;
 
-    [Header("Outras")]
+    [Header("Other Variables")]
     private EventSystem eventSystem;
     public bool mouseIsOverUI;
+    private bool contextMenuOpen = false;
+    private bool touchOnInteractiveObject = false;
+    private bool touchMovedCamera = false;
 
-
-    void Update()
+    private void Start()
     {
-        if (TouchOutsideUI() == true)
+        interactableObjectMenu.SetActive(false);
+        eventSystem = FindObjectOfType<EventSystem>();
+    }
+
+    private void Update()
+    {
+        if (TouchOutsideUI())
         {
-            DeactiveAllFloatingMenus();
+            DeactivateAllFloatingMenus();
+        }
+
+        if (Input.touchCount == 0)
+        {
+            ResetTouchVariables();
+            return;
+        }
+
+        Touch touch = Input.GetTouch(0);
+        if (touch.phase == TouchPhase.Began)
+        {
+            touchOnInteractiveObject = false;
+            touchMovedCamera = false;
+
+            if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId)) // check if touch happens outside of UI elements
+            {
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, touchableLayer))
+                {
+                    touchOnInteractiveObject = true;
+                    Invoke("CheckTouchMovedCamera", 0.25f);
+                }
+            }
+        }
+        else if (touch.phase == TouchPhase.Moved && touchOnInteractiveObject)
+        {
+            touchMovedCamera = true;
+        }
+        else if (touch.phase == TouchPhase.Ended)
+        {
+            if (!touchMovedCamera && touchOnInteractiveObject)
+            {
+                OpenInteractiveMenu();
+            }
+
+            ResetTouchVariables();
         }
     }
 
-    public void ActiveUIElement(GameObject menuElement)
+    private void CheckTouchMovedCamera()
+    {
+        if (!touchMovedCamera && touchOnInteractiveObject)
+        {
+            OpenInteractiveMenu();
+        }
+
+        ResetTouchVariables();
+    }
+
+    private void ResetTouchVariables()
+    {
+        touchOnInteractiveObject = false;
+        touchMovedCamera = false;
+        CancelInvoke();
+    }
+
+    public void ActivateUIElement(GameObject menuElement)
     {
         menuElement.SetActive(true);
     }
 
-
-    public void DesactiveUIElement(GameObject menuElement)
+    public void DeactivateUIElement(GameObject menuElement)
     {
         menuElement.SetActive(false);
     }
 
-    public void DeactiveAllFloatingMenus()
+    public void DeactivateAllFloatingMenus()
     {
         for (int i = allFloatingMenus.Length - 1; i >= 0; i--)
         {
             allFloatingMenus[i].SetActive(false);
         }
+        contextMenuOpen = false;
     }
 
     public bool TouchOutsideUI()
@@ -70,4 +131,11 @@ public class UIManager : MonoBehaviour
         return false;
     }
 
+    public void OpenInteractiveMenu()
+    {
+        audioController.PlaySound(audioController.menuConfirm);
+        DeactivateAllFloatingMenus();
+        interactableObjectMenu.SetActive(true);
+        interactableObjectMenu.transform.position = Input.GetTouch(0).position;
+    } 
 }

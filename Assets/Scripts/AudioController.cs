@@ -60,10 +60,10 @@ public class AudioController : MonoBehaviour
         }
 
         soundFxSource.volume = soundFxVolumeSlider.value;
-        playSound(menuConfirm);
+        PlaySound(menuConfirm);
     }
 
-    public void playSound(AudioClip fxSound)
+    public void PlaySound(AudioClip fxSound)
     {
         soundFxSource.PlayOneShot(fxSound);
     }

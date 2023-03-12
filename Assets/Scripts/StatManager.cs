@@ -26,10 +26,10 @@ public class StatManager : MonoBehaviour
         mainMenuController.currentBodyFat -= bodyFatDecayRate;
 
         // Faz algo com as variáveis de bem-estar atualizadas, por exemplo:
-        Debug.Log("Current Feed: " + mainMenuController.currentFeed);
-        Debug.Log("Current Suplementation: " + mainMenuController.currentSuplementation);
-        Debug.Log("Current Energy: " + mainMenuController.currentEnergy);
-        Debug.Log("Current Musculature: " + mainMenuController.currentMusculature);
-        Debug.Log("Current Body Fat: " + mainMenuController.currentBodyFat);
+        //Debug.Log("Current Feed: " + mainMenuController.currentFeed);
+        //Debug.Log("Current Suplementation: " + mainMenuController.currentSuplementation);
+        //Debug.Log("Current Energy: " + mainMenuController.currentEnergy);
+        //Debug.Log("Current Musculature: " + mainMenuController.currentMusculature);
+        //Debug.Log("Current Body Fat: " + mainMenuController.currentBodyFat);
     }
 }
