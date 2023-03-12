@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -20,7 +21,12 @@ public class CameraController : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
+            // Verifica se o toque começou em um elemento de UI
+            if (touch.phase == TouchPhase.Began && EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+            {
+                isDragging = false;
+            }
+            else if (touch.phase == TouchPhase.Began)
             {
                 previousTouchPosition = touch.position.x;
                 isDragging = true;

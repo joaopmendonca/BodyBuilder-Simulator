@@ -2,8 +2,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
 public class MainMenuController : MonoBehaviour
 {
+    public static MainMenuController Instance;
+
     [Header("Welfare Stats")]
     public Image generalWelfareBar;
     public int currentGeneralWelfare;
@@ -44,6 +47,11 @@ public class MainMenuController : MonoBehaviour
     private const string CurrentMusculatureKey = "currentMusculature";
     private const string CurrentBodyFatKey = "currentBodyFat";
     private const string GoldCountKey = "goldCount";
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update    
     void Start()
@@ -122,7 +130,7 @@ public class MainMenuController : MonoBehaviour
         currentBodyFat += amount;
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         // Limita os valores das estatísticas musculares para seus máximos definidos em max
         currentGeneralWelfare = Mathf.Clamp(currentGeneralWelfare, 0, maxGeneralWelfare);

@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private LayerMask touchableLayer;
     [SerializeField] private GameObject interactableObjectMenu;
     [SerializeField] private AudioController audioController;
+    [SerializeField] private Animator smartphoneAnimator;
 
     [Header("UI Elements")]
     public Sprite[] welfareStatsImg;
@@ -17,6 +18,9 @@ public class UIManager : MonoBehaviour
     public GameObject detailsHealthLabel;
     public GameObject detailsMusculatureLabel;
     public GameObject configurePanel;
+    public GameObject marketPanel;
+    public GameObject closeSmartphoneBtn;
+    public bool smartphoneOn;
 
     [Header("Other Variables")]
     private EventSystem eventSystem;
@@ -33,6 +37,17 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
+        smartphoneAnimator.SetBool("smartphoneOn", smartphoneOn);
+
+        if(marketPanel.activeSelf == true)
+        {
+            closeSmartphoneBtn.SetActive(false);
+        }
+        else
+        {
+            closeSmartphoneBtn.SetActive(true);
+        }
+
         if (TouchOutsideUI())
         {
             DeactivateAllFloatingMenus();
@@ -108,6 +123,7 @@ public class UIManager : MonoBehaviour
         {
             allFloatingMenus[i].SetActive(false);
         }
+        smartphoneOn = false;
         contextMenuOpen = false;
     }
 
@@ -138,4 +154,17 @@ public class UIManager : MonoBehaviour
         interactableObjectMenu.SetActive(true);
         interactableObjectMenu.transform.position = Input.GetTouch(0).position;
     } 
+    public void OpenSmartphone()
+    {
+        smartphoneOn = true;
+    }
+    public void CloseSmartphone()
+    {
+        smartphoneOn = false;
+    }
+
+    public void AddMoney()
+    {
+        MainMenuController.Instance.goldCount += 100;
+    }
 }
