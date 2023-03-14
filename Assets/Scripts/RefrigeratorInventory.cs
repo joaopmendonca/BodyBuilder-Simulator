@@ -6,6 +6,7 @@ public class RefrigeratorInventory : MonoBehaviour
 {
     public static RefrigeratorInventory Instance;
 
+    public int maxCapacity = 20;
     public Dictionary<ConsumableItem, int> items = new Dictionary<ConsumableItem, int>();
     public GameObject inventoryPanel;
     public GameObject iconsContainerWindow;
@@ -21,16 +22,36 @@ public class RefrigeratorInventory : MonoBehaviour
 
     }
 
-    public void AddItem(ConsumableItem item)
+    public void AddItem(ConsumableItem item, int quantity)
     {
         if (items.ContainsKey(item))
         {
-            items[item]++;
+            items[item] += quantity;
         }
         else
         {
-            items.Add(item, 1);
+            items.Add(item, quantity);
         }
+
+        // Verifica se a quantidade máxima foi atingida e remove o item mais antigo se necessário
+        while (items.Count > maxCapacity)
+        {
+            ConsumableItem oldestItem = null;
+            foreach (ConsumableItem i in items.Keys)
+            {
+                if (oldestItem == null || items[i] < items[oldestItem])
+                {
+                    oldestItem = i;
+                }
+            }
+
+            if (oldestItem != null)
+            {
+                items.Remove(oldestItem);
+            }
+        }
+
+        ShowInventory();
     }
 
     public void RemoveItem(ConsumableItem item)
@@ -43,6 +64,8 @@ public class RefrigeratorInventory : MonoBehaviour
                 items.Remove(item);
             }
         }
+
+        ShowInventory();
     }
 
     public void ShowInventory()
@@ -70,4 +93,17 @@ public class RefrigeratorInventory : MonoBehaviour
         inventoryPanel.SetActive(false);
     }
 
+    public void SetQuantity(ConsumableItem item, int quantity)
+    {
+        if (quantity <= 0)
+        {
+            items.Remove(item);
+        }
+        else
+        {
+            items[item] = quantity;
+        }
+
+        ShowInventory();
+    }
 }

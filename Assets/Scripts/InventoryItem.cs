@@ -22,7 +22,7 @@ public class InventoryItem : MonoBehaviour
         itemName.text = consumableItem.name;
         itemDescription.text = consumableItem.description;
         icon.sprite = consumableItem.image;
-        recoveryValue = consumableItem.recoveryValue;
+        recoveryValue = consumableItem.feedRecoveryValue;
     }
 
     // Update is called once per frame
@@ -43,18 +43,68 @@ public class InventoryItem : MonoBehaviour
 
     public void UseItem()
     {
-        // Verifica se o jogador tem pelo menos um item desse tipo no inventário
-        if (RefrigeratorInventory.Instance.items.ContainsKey(consumableItem))
+        switch (consumableItem.itemType)
         {
-            // Remove um item desse tipo do inventário
-            RefrigeratorInventory.Instance.RemoveItem(consumableItem);
-
-            // Executa a ação do item
-
-        }
-        else
-        {
-            Debug.Log("You don't have any of this item in your inventory!");
+            case ConsumableItemType.Food:
+                UseFoodItem();
+                break;
+            case ConsumableItemType.Supplement:
+                UseSupplementItem();
+                break;
+            case ConsumableItemType.Medicine:
+                UseMedicineItem();
+                break;
+            default:
+                break;
         }
     }
+
+    private void UseFoodItem()
+    {
+        // Adiciona o valor de recuperação de feed do item no jogador
+        MainMenuController.Instance.currentFeed += recoveryValue;
+
+        // Verifica se o jogador ultrapassou o valor máximo permitido de feed
+        if (MainMenuController.Instance.currentFeed > MainMenuController.Instance.maxFeed)
+        {
+            MainMenuController.Instance.currentFeed = MainMenuController.Instance.maxFeed;
+        }
+
+        // Atualiza a barra de feed do jogador
+        MainMenuController.Instance.feedBar.fillAmount = (float)MainMenuController.Instance.currentFeed / MainMenuController.Instance.maxFeed;
+
+        //Atualiza a quantidade do item no inventário
+        int quantity = 0;
+        if (RefrigeratorInventory.Instance.items.TryGetValue(consumableItem, out quantity))
+        {
+            RefrigeratorInventory.Instance.SetQuantity(consumableItem, quantity - 1);
+        }
+    }
+
+    private void UseSupplementItem()
+    {
+        // Acessa a quantidade de suplementação do jogador e aumenta em 10
+        MainMenuController.Instance.currentSuplementation += 10;
+
+        //Atualiza a quantidade do item no inventário
+        int quantity = 0;
+        if (RefrigeratorInventory.Instance.items.TryGetValue(consumableItem, out quantity))
+        {
+            RefrigeratorInventory.Instance.SetQuantity(consumableItem, quantity - 1);
+        }
+    }
+
+    private void UseMedicineItem()
+    {
+        // Acessa a quantidade de energia do jogador e aumenta em 10
+        MainMenuController.Instance.currentEnergy += 10;
+
+        //Atualiza a quantidade do item no inventário
+        int quantity = 0;
+        if (RefrigeratorInventory.Instance.items.TryGetValue(consumableItem, out quantity))
+        {
+            RefrigeratorInventory.Instance.SetQuantity(consumableItem, quantity - 1);
+        }
+    }
+
 }

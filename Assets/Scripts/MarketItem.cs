@@ -18,6 +18,12 @@ public class MarketItem : MonoBehaviour
     public TextMeshProUGUI descriptionItemName;
 
     public GameObject itemDescriptionLabel;
+    public Slider amountSlider;
+    public TextMeshProUGUI amountText;
+    public Button buyButton;
+    public Image[] sliderColor;
+
+    private static MarketItem currentDescriptionItem = null;
 
     // Start is called before the first frame update
     void Start()
@@ -25,44 +31,110 @@ public class MarketItem : MonoBehaviour
         itemName.text = consumableItem.name;
         itemDescription.text = consumableItem.description;
         icon.sprite = consumableItem.image;
-        recoveryValue = consumableItem.recoveryValue;
+        recoveryValue = consumableItem.feedRecoveryValue;
         itemPrice = consumableItem.price;
         descriptionItemName.text = consumableItem.name;
         itemPriceText.text = "$" + itemPrice.ToString("00.00");
+
+        UpdateMaxAmount();
+
+        amountSlider.onValueChanged.AddListener(OnAmountSliderValueChanged);
+        amountSlider.maxValue = Mathf.Min(amountSlider.maxValue, 99);
+        amountText.text = "1";
+
+        MainMenuController.Instance.onGoldCountChanged.AddListener(UpdateMaxAmount);
     }
+
+    private void OnDestroy()
+    {
+        MainMenuController.Instance.onGoldCountChanged.RemoveListener(UpdateMaxAmount);
+    }
+
+    private void UpdateMaxAmount()
+    {
+        int maxAmount = Mathf.Min(Mathf.FloorToInt(MainMenuController.Instance.goldCount / itemPrice), 99);
+
+        if (maxAmount <= 0)
+        {
+            // Define o valor máximo do slider como zero
+            amountSlider.maxValue = 0;
+
+            foreach (Image img in sliderColor)
+            {
+                img.color = new Color(200f / 255f, 200f / 255f, 200f / 255f, 1f);
+            }
+
+            amountSlider.interactable = false;
+            amountSlider.value = 0;
+            amountText.text = "0";
+        }
+        else
+        {
+            // Define o valor máximo do slider como maxAmount
+            amountSlider.maxValue = maxAmount;
+
+            foreach (Image img in sliderColor)
+            {
+                img.color = new Color(255f / 255f, 255f / 255f, 255f / 255f, 1f);
+            }
+            amountSlider.interactable = true;
+            amountSlider.value = Mathf.Min(amountSlider.value, maxAmount);
+            amountText.text = Mathf.FloorToInt(amountSlider.value).ToString();
+        }
+    }
+
+
 
     // Update is called once per frame
     void Update()
     {
-
-    }
-
-    public void showItemDescription()
-    {
-        itemDescriptionLabel.SetActive(true);
-    }
-    public void hideItemDescription()
-    {
-        itemDescriptionLabel.SetActive(false);
-    }
-
-    public void BuyItem(int itemIndex)
-    {
-        // Acessa o script MarketManager
-        MarketManager marketManager = FindObjectOfType<MarketManager>();
-
-        // Verifica se o jogador tem ouro suficiente para comprar o item
-        if (marketManager.items[itemIndex].price <= MainMenuController.Instance.goldCount)
+        // Verifica se a quantidade selecionada no slider é maior que zero e se o jogador tem ouro suficiente para comprar o item
+        int totalPrice = itemPrice * Mathf.FloorToInt(amountSlider.value);
+        if (amountSlider.value > 0 && totalPrice <= MainMenuController.Instance.goldCount)
         {
-            // Deduz o preço do item do ouro do jogador
-            MainMenuController.Instance.goldCount -= marketManager.items[itemIndex].price;
-
-            // Adiciona o item ao inventário do jogador
-            RefrigeratorInventory.Instance.AddItem(consumableItem);
+            // O jogador tem ouro suficiente e a quantidade selecionada é maior que zero para comprar o item, reativa o botão de compra
+            buyButton.interactable = true;
+            buyButton.GetComponent<Image>().color = Color.white;
         }
         else
         {
-            Debug.Log("You don't have enough gold!");
+            // O jogador não tem ouro suficiente ou a quantidade selecionada é igual a zero para comprar o item, desativa o botão de compra
+            buyButton.interactable = false;
+            buyButton.GetComponent<Image>().color = Color.grey;
         }
     }
+
+    private void OnAmountSliderValueChanged(float value)
+    {
+        amountText.text = Mathf.FloorToInt(value).ToString();
+    }
+
+    public void OnItemClick()
+    {
+        if (currentDescriptionItem != null)
+        {
+            currentDescriptionItem.itemDescriptionLabel.SetActive(false);
+        }
+
+        itemDescriptionLabel.SetActive(true);
+        currentDescriptionItem = this;
+    }
+
+    public void OnBuyButtonClick()
+    {
+        int quantity = Mathf.FloorToInt(amountSlider.value);
+        int totalPrice = itemPrice * quantity;
+
+        // Verifica se o jogador tem ouro suficiente para comprar o item
+        if (totalPrice <= MainMenuController.Instance.goldCount)
+        {
+            // Remove o ouro necessário do jogador
+            MainMenuController.Instance.RemoveGold(totalPrice);
+
+            // Adiciona o item ao inventário
+            RefrigeratorInventory.Instance.SetQuantity(consumableItem, RefrigeratorInventory.Instance.items.GetValueOrDefault(consumableItem, 0) + quantity);
+
+        }
+    }
+
 }

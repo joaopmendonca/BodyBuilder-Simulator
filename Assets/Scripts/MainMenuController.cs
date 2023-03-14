@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 
@@ -37,6 +38,7 @@ public class MainMenuController : MonoBehaviour
     public UIManager uiManager;
     public TextMeshProUGUI goldTxt;
     public int goldCount;
+    public UnityEvent onGoldCountChanged;
 
     // Identificadores dos valores salvos com PlayerPrefs
     private const string CurrentGeneralWelfareKey = "currentGeneralWelfare";
@@ -80,6 +82,17 @@ public class MainMenuController : MonoBehaviour
     private void Update()
     {
         UpdateUI();
+    }
+
+    public void AddGold(int amount)
+    {
+        goldCount += amount;
+        onGoldCountChanged.Invoke();
+    }
+    public void RemoveGold(int amount)
+    {
+        goldCount -= amount;
+        onGoldCountChanged.Invoke();
     }
     private void OnDisable()
     {

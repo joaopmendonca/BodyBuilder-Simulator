@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
     [Header("Other Variables")]
     private EventSystem eventSystem;
     public bool mouseIsOverUI;
-    private bool contextMenuOpen = false;
+    //private bool contextMenuOpen = false;
     private bool touchOnInteractiveObject = false;
     private bool touchMovedCamera = false;
 
@@ -124,7 +124,7 @@ public class UIManager : MonoBehaviour
             allFloatingMenus[i].SetActive(false);
         }
         smartphoneOn = false;
-        contextMenuOpen = false;
+        //contextMenuOpen = false;
     }
 
     public bool TouchOutsideUI()
@@ -163,8 +163,4 @@ public class UIManager : MonoBehaviour
         smartphoneOn = false;
     }
 
-    public void AddMoney()
-    {
-        MainMenuController.Instance.goldCount += 100;
-    }
 }
