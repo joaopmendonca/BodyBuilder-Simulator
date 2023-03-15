@@ -120,6 +120,11 @@ public class MarketItem : MonoBehaviour
         currentDescriptionItem = this;
     }
 
+    public void DesableItemDescription()
+    {
+        itemDescriptionLabel.SetActive(false);
+    }
+
     public void OnBuyButtonClick()
     {
         int quantity = Mathf.FloorToInt(amountSlider.value);

@@ -124,7 +124,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6539933306447661986}
         m_TargetAssemblyTypeName: MarketItem, Assembly-CSharp
-        m_MethodName: hideItemDescription
+        m_MethodName: DesableItemDescription
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
