@@ -3817,6 +3817,9 @@ MonoBehaviour:
   uiManager: {fileID: 1856356335}
   goldTxt: {fileID: 1020565051}
   goldCount: 0
+  onGoldCountChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &623174691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7534,6 +7537,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1074102680}
+  - component: {fileID: 1074102681}
   m_Layer: 6
   m_Name: ArmarioCozinha
   m_TagString: Untagged
@@ -7562,6 +7566,19 @@ Transform:
   m_Father: {fileID: 302664051}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1074102681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074102679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47b55d6ee7815714bbcd144cf1b6d5ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxCapacity: 20
 --- !u!4 &1082864036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4de073b0a20116646bea58fc8cbc0323,
@@ -12134,10 +12151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2291e5b794acfea45800512e74971ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 464802415}
-  iconsContainerWindow: {fileID: 2070827499}
-  itemIconPrefab: {fileID: 7709576507272041026, guid: a8c1f86d5a9d08645a076eac9398b092,
-    type: 3}
 --- !u!1 &1825462509
 GameObject:
   m_ObjectHideFlags: 0
@@ -12661,14 +12674,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1856356335}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: AddMoney
-        m_Mode: 1
+      - m_Target: {fileID: 623174690}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: AddGold
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 100
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

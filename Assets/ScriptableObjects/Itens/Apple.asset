@@ -15,9 +15,9 @@ MonoBehaviour:
   description: A tasty and refreshing fruit that can be consumed to satisfy a bit
     of your hunger.
   image: {fileID: 21300000, guid: 914690852929326479262de857de8516, type: 3}
-  feedRecoveryValue: 0
+  feedRecoveryValue: 25
   suplementationRecoveryValue: 0
-  healthRecoveryValue: 25
+  healthRecoveryValue: 0
   price: 10
   itemPrefab: {fileID: 3890715527686489439, guid: e0ca82d4eb61b55478275aacd4782ac0,
     type: 3}
