@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MarketItem : MonoBehaviour
@@ -16,24 +17,28 @@ public class MarketItem : MonoBehaviour
     public int itemPrice;
     public TextMeshProUGUI itemPriceText;
     public TextMeshProUGUI descriptionItemName;
-
+    public RectTransform rectMarketPanel;
     public GameObject itemDescriptionLabel;
     public Slider amountSlider;
     public TextMeshProUGUI amountText;
     public Button buyButton;
     public Image[] sliderColor;
 
+  
+
     private static MarketItem currentDescriptionItem = null;
 
     // Start is called before the first frame update
     void Start()
     {
-        itemName.text = consumableItem.name;
+        itemName.text = consumableItem.itemName;
         itemDescription.text = consumableItem.description;
         icon.sprite = consumableItem.image;
         recoveryValue = consumableItem.feedRecoveryValue;
         itemPrice = consumableItem.price;
-        descriptionItemName.text = consumableItem.name;
+        descriptionItemName.text = consumableItem.itemName;
+        descriptionItemName.text = consumableItem.itemName;
+        descriptionItemName.text = consumableItem.itemName;
         itemPriceText.text = "$" + itemPrice.ToString("00.00");
 
         UpdateMaxAmount();
@@ -48,6 +53,11 @@ public class MarketItem : MonoBehaviour
     private void OnDestroy()
     {
         MainMenuController.Instance.onGoldCountChanged.RemoveListener(UpdateMaxAmount);
+
+    }
+    private void OnDisable()
+    {
+        itemDescriptionLabel.SetActive(false);
     }
 
     private void UpdateMaxAmount()
@@ -102,6 +112,8 @@ public class MarketItem : MonoBehaviour
             buyButton.interactable = false;
             buyButton.GetComponent<Image>().color = Color.grey;
         }
+
+        TouchScreen();
     }
 
     private void OnAmountSliderValueChanged(float value)
@@ -120,7 +132,7 @@ public class MarketItem : MonoBehaviour
         currentDescriptionItem = this;
     }
 
-    public void DesableItemDescription()
+    public void DisableItemDescription()
     {
         itemDescriptionLabel.SetActive(false);
     }
@@ -142,4 +154,36 @@ public class MarketItem : MonoBehaviour
         }
     }
 
+    public void TouchScreen()
+    {
+        // Verifica se o jogador tocou na tela.
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            // Verifica se a posição do toque está dentro do retângulo do RectTransform.
+            if (RectTransformUtility.RectangleContainsScreenPoint(rectMarketPanel, touch.position))
+            {
+                // O jogador tocou na área do rectMarketPanel.
+                Debug.Log("Jogador tocou na área do rectMarketPanel.");
+            }
+            else
+            {
+
+            }
+        }
+    }
+
+    public void PlayBuySound()
+    {
+        AudioController.Instance.PlaySound(AudioController.Instance.buyItem);
+    }
+    public void PlayCancelSound()
+    {
+        AudioController.Instance.PlaySound(AudioController.Instance.menuCancel);
+    }
+    public void PlayItemSelectionSound()
+    {
+        AudioController.Instance.PlaySound(AudioController.Instance.menuClick);
+    }
 }

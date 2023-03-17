@@ -1404,12 +1404,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ad6034a2d200c42806e32816e98c2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  consumableItem: {fileID: 11400000, guid: a383b741947aa9f4bab8aeadc36fe9c7, type: 2}
+  consumableItem: {fileID: 0}
   itemName: {fileID: 3095415387564833121}
   itemDescription: {fileID: 3351813512288710353}
   itemCount: {fileID: 6415006913851029432}
   icon: {fileID: 5962523324166974098}
   recoveryValue: 0
+  useItemSound: {fileID: 0}
   itemDescriptionLabel: {fileID: 879423128312176756}
 --- !u!1 &7714446910535699008
 GameObject:

@@ -10,7 +10,8 @@ public enum ConsumableItemType
 [CreateAssetMenu(fileName = "New ConsumableItem", menuName = "Itens/ConsumableItem")]
 public class ConsumableItem : ScriptableObject
 {
-    public new string name { get; set; }
+    public string itemName;
+    public AudioClip useItemSound;
     public string description;
     public Sprite image;
     public int feedRecoveryValue;

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fceeadb811e563c4b94d40e3cfc22313, type: 3}
   m_Name: WheyProtein
   m_EditorClassIdentifier: 
+  itemName: Whey Protein
+  useItemSound: {fileID: 8300000, guid: a8d058894609fd047ba7302289bfe3b5, type: 3}
   description: Dietary supplement with high-quality whey protein for muscle recovery
     and lean mass gain, ideal for athletes and fitness enthusiasts. Easy to prepare
     and absorb.

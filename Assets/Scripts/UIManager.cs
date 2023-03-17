@@ -21,6 +21,10 @@ public class UIManager : MonoBehaviour
     public GameObject marketPanel;
     public GameObject closeSmartphoneBtn;
     public bool smartphoneOn;
+    public bool marketAppIsOpen;
+    public GameObject gamePlayPanel;
+    public GameObject characterConfigurationPanel;
+
 
     [Header("Other Variables")]
     private EventSystem eventSystem;
@@ -39,15 +43,7 @@ public class UIManager : MonoBehaviour
     {
         smartphoneAnimator.SetBool("smartphoneOn", smartphoneOn);
 
-        if(marketPanel.activeSelf == true)
-        {
-            closeSmartphoneBtn.SetActive(false);
-        }
-        else
-        {
-            closeSmartphoneBtn.SetActive(true);
-        }
-
+       
         if (TouchOutsideUI())
         {
             DeactivateAllFloatingMenus();
@@ -123,7 +119,8 @@ public class UIManager : MonoBehaviour
         {
             allFloatingMenus[i].SetActive(false);
         }
-        smartphoneOn = false;
+        CloseSmartphone();
+        CloseMarket();
         //contextMenuOpen = false;
     }
 
@@ -157,10 +154,28 @@ public class UIManager : MonoBehaviour
     public void OpenSmartphone()
     {
         smartphoneOn = true;
+        if(marketPanel.activeSelf == true)
+        {
+            marketAppIsOpen = true;
+        }
+        else
+        {
+            marketAppIsOpen = false;
+        }
     }
     public void CloseSmartphone()
     {
         smartphoneOn = false;
+    }
+    public void OpenMarketApp()
+    {
+        marketAppIsOpen = true;
+        marketPanel.SetActive(true);
+    }
+    public void CloseMarket()
+    {
+        marketAppIsOpen = false;
+        marketPanel.SetActive(false);
     }
 
 }

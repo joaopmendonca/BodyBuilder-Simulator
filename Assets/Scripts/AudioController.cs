@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class AudioController : MonoBehaviour
 {
+    public static AudioController Instance;
+
     [Header("Audio Sources")]
     public AudioSource musicSource;
     public AudioSource soundFxSource;
@@ -13,6 +15,7 @@ public class AudioController : MonoBehaviour
     public AudioClip menuConfirm;
     public AudioClip menuCancel;
     public AudioClip menuClick;
+    public AudioClip buyItem;
 
     [Header("Musics")]
     public AudioClip mainMenuMusic;
@@ -28,6 +31,11 @@ public class AudioController : MonoBehaviour
     [Header("Sliders")]
     public Slider musicVolumeSlider;
     public Slider soundFxVolumeSlider;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()

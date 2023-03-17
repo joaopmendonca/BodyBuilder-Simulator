@@ -9,6 +9,7 @@ public class MarketManager : MonoBehaviour
     public List<ConsumableItem> items = new List<ConsumableItem>();
     public GameObject itemsContainer;
     public GameObject itemMarketIconPrefab;
+    public TextMeshProUGUI goldTxt;
 
     public MainMenuController mainMenuController;
 
@@ -31,6 +32,11 @@ public class MarketManager : MonoBehaviour
             // Define o �ndice do objeto na lista
             marketItem.itemIndex = i;                        
         }
+    }
+
+    private void Update()
+    {
+        goldTxt.text = MainMenuController.Instance.goldCount.ToString();
     }
 
 }

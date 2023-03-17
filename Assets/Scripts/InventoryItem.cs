@@ -13,16 +13,18 @@ public class InventoryItem : MonoBehaviour
     public TextMeshProUGUI itemCount;
     public Image icon;
     public int recoveryValue;
+    public AudioClip useItemSound;
 
     public GameObject itemDescriptionLabel;
 
     // Start is called before the first frame update
     void Start()
     {
-        itemName.text = consumableItem.name;
+        itemName.text = consumableItem.itemName;
         itemDescription.text = consumableItem.description;
         icon.sprite = consumableItem.image;
         recoveryValue = consumableItem.feedRecoveryValue;
+        useItemSound = consumableItem.useItemSound;
     }
 
     // Update is called once per frame
@@ -61,6 +63,10 @@ public class InventoryItem : MonoBehaviour
 
     private void UseFoodItem()
     {
+        if (useItemSound != null)
+        {
+            AudioController.Instance.PlaySound(useItemSound);
+        }
         // Adiciona o valor de recuperação de feed do item no jogador
         MainMenuController.Instance.currentFeed += recoveryValue;
 
@@ -83,6 +89,11 @@ public class InventoryItem : MonoBehaviour
 
     private void UseSupplementItem()
     {
+        if (useItemSound != null)
+        {
+            AudioController.Instance.PlaySound(useItemSound);
+        }
+
         // Acessa a quantidade de suplementação do jogador e aumenta em 10
         MainMenuController.Instance.currentSuplementation += 10;
 
@@ -96,6 +107,11 @@ public class InventoryItem : MonoBehaviour
 
     private void UseMedicineItem()
     {
+        if (useItemSound != null)
+        {
+            AudioController.Instance.PlaySound(useItemSound);
+        }
+        AudioController.Instance.PlaySound(useItemSound);
         // Acessa a quantidade de energia do jogador e aumenta em 10
         MainMenuController.Instance.currentEnergy += 10;
 
